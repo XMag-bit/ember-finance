@@ -6,13 +6,12 @@ import { colors, spacing, fonts } from "../theme";
 import { Card } from "../components/ui";
 import { FadeInView, SlideUpSheet } from "../components/motion";
 import { ScreenHeader } from "../components/ScreenHeader";
-import { AppIcon } from "../components/AppIcon";
 import { Calendar } from "../components/Calendar";
 import { AmountInput } from "../components/AmountInput";
 import { CURRENCY_SYMBOLS } from "../data/mock";
 import { CYCLES, type Cycle } from "../data/subscriptions";
 import { cancelSubReminders, ensurePermission, hasPermission, scheduleSubReminders } from "../data/notifications";
-import { SUB_ICONS, useSubs } from "../store/SubsContext";
+import { useSubs } from "../store/SubsContext";
 import { useProfile } from "../store/UserContext";
 
 function atNoon(d: Date): Date {
@@ -35,8 +34,6 @@ export function NewSubscriptionScreen({ navigation, route }: any) {
   const [next, setNext] = useState(() => atNoon(existing ? new Date(existing.nextTs) : new Date()));
   const [calOpen, setCalOpen] = useState(false);
   const [permBlocked, setPermBlocked] = useState(false);
-
-  const previewIcon = existing?.icon ?? SUB_ICONS[subs.length % SUB_ICONS.length];
 
   // Resync when the same instance is reused with a different id param.
   useEffect(() => {
@@ -151,13 +148,6 @@ export function NewSubscriptionScreen({ navigation, route }: any) {
                 </TouchableOpacity>
               ))}
             </View>
-            <Text style={styles.label}>Icon preview</Text>
-            <View style={styles.previewRow}>
-              <AppIcon name={previewIcon} tileSize={50} size={24} />
-              <Text style={styles.previewText}>
-                {name.trim() ? `${name.trim()} · ${cycle}` : "Name it to see the card"}
-              </Text>
-            </View>
             <Text style={styles.label}>Next renewal</Text>
             <TouchableOpacity onPress={() => setCalOpen(true)} style={styles.dateButton} accessibilityLabel="Pick renewal date">
               <Ionicons name="calendar-outline" size={20} color={colors.accent} />
@@ -214,8 +204,6 @@ const styles = StyleSheet.create({
   cycleActive: { backgroundColor: colors.ink, borderColor: colors.ink },
   cycleText: { fontWeight: "700", fontFamily: fonts.bodyBold, color: colors.ink2, fontSize: 13 },
   cycleTextActive: { color: "#fff" },
-  previewRow: { flexDirection: "row", alignItems: "center", gap: 12 },
-  previewText: { flex: 1, fontSize: 14, fontFamily: fonts.body, color: colors.muted, lineHeight: 20 },
   dateButton: { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "#fff", borderWidth: 1, borderColor: colors.border, borderRadius: 14, padding: 14 },
   dateText: { flex: 1, fontSize: 16, fontWeight: "700", fontFamily: fonts.bodyBold, color: colors.ink },
   create: { backgroundColor: colors.accent, borderRadius: 14, paddingVertical: 14, alignItems: "center", marginTop: 14 },
