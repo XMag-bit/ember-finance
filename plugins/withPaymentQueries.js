@@ -16,6 +16,9 @@ const SCHEMES = [
   "brimo",
   "livin",
   "bni",
+  "paypal",
+  "alipay",
+  "weixin",
 ];
 
 function ensureQueries(manifest) {
