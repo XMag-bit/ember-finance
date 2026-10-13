@@ -1,6 +1,6 @@
 import * as Notifications from "expo-notifications";
 import { money } from "./mock";
-import type { Subscription } from "./subscriptions";
+import { daysUntil, type Subscription } from "./subscriptions";
 
 export const SUBS_CHANNEL = "subscriptions";
 export const REMINDER_TIMES = ["08:00", "09:00", "12:00", "18:00"] as const;
@@ -10,6 +10,13 @@ export type ReminderOpts = {
   /** "HH:MM" local time. */
   time: string;
   currency: string;
+  /**
+   * When true (user-driven create/edit/mark-paid), an already-overdue
+   * subscription also gets one immediate notice - its 3/1/0-day triggers are
+   * all in the past and would otherwise stay silent forever. Pass false for
+   * background re-schedules so launches don't re-notify.
+   */
+  overdueNow?: boolean;
 };
 
 Notifications.setNotificationHandler({
@@ -83,7 +90,9 @@ export async function cancelSubReminders(sub: Pick<Subscription, "notifIds">): P
 
 /**
  * Schedules reminders at 3 days before, 1 day before and on the due date.
- * Past triggers are skipped. Returns the scheduled notification ids.
+ * Past triggers are skipped. If the subscription is already overdue and
+ * opts.overdueNow is set, one notice fires a few seconds from now so the
+ * overdue state is actually announced. Returns the scheduled ids.
  */
 export async function scheduleSubReminders(
   sub: Subscription,
@@ -92,14 +101,13 @@ export async function scheduleSubReminders(
   await ensureChannel();
   await cancelSubReminders(sub);
   const ids: string[] = [];
-  for (const days of [3, 1, 0]) {
-    const when = reminderDate(sub.nextTs, days, opts.time);
-    if (when.getTime() <= Date.now()) continue;
+  const post = async (title: string, body: string, when: Date) => {
+    if (when.getTime() <= Date.now()) return;
     try {
       const id = await Notifications.scheduleNotificationAsync({
         content: {
-          title: titleFor(sub, days),
-          body: `${money(sub.amount, opts.currency)} ${sub.cycle} comes out of your budget`,
+          title,
+          body,
           data: { screen: "Subscriptions", subId: sub.id },
           sound: true,
         },
@@ -108,6 +116,23 @@ export async function scheduleSubReminders(
       ids.push(id);
     } catch {
       // Scheduler unavailable - the in-app alerts still cover reminders.
+    }
+  };
+  for (const days of [3, 1, 0]) {
+    await post(
+      titleFor(sub, days),
+      `${money(sub.amount, opts.currency)} ${sub.cycle} comes out of your budget`,
+      reminderDate(sub.nextTs, days, opts.time)
+    );
+  }
+  if (opts.overdueNow !== false) {
+    const left = daysUntil(sub);
+    if (left < 0) {
+      await post(
+        `${sub.name} was due ${Math.abs(left)}d ago`,
+        `${money(sub.amount, opts.currency)} ${sub.cycle} - mark it paid or check the charge.`,
+        new Date(Date.now() + 5000)
+      );
     }
   }
   return ids;

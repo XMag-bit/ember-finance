@@ -200,7 +200,7 @@ function NotificationGate() {
     (async () => {
       if (!profile.remindersEnabled) return;
       if (!(await hasPermission())) return;
-      const map = await rescheduleAll(subs, { time: profile.reminderTime, currency: profile.currency });
+      const map = await rescheduleAll(subs, { time: profile.reminderTime, currency: profile.currency, overdueNow: false });
       for (const [id, ids] of Object.entries(map)) setSubNotifIds(id, ids);
     })();
   }, []);

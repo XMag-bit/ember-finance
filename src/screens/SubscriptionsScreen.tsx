@@ -117,13 +117,7 @@ export function SubscriptionsScreen({ navigation }: any) {
                     <Text style={{ fontWeight: "700", fontSize: 16, fontFamily: fonts.bodyBold, color: colors.ink }}>
                       {s.name}
                     </Text>
-                    <Text style={{ color: colors.muted, fontSize: 13, fontFamily: fonts.body, marginTop: 2 }}>
-                      {money(s.amount, cur)} / {s.cycle}
-                    </Text>
                   </View>
-                  <Text style={[styles.status, overdue && styles.statusOver]}>
-                    {formatRenewal(s)}
-                  </Text>
                   <TouchableOpacity onPress={() => navigation.navigate("NewSubscription", { id: s.id })} hitSlop={8} accessibilityLabel={`Edit ${s.name}`}>
                     <Ionicons name="pencil-outline" size={18} color={colors.faint} />
                   </TouchableOpacity>
@@ -131,6 +125,12 @@ export function SubscriptionsScreen({ navigation }: any) {
                     <Ionicons name="trash-outline" size={18} color={colors.faint} />
                   </TouchableOpacity>
                 </View>
+                <Text style={{ color: colors.muted, fontSize: 14, fontFamily: fonts.bodyBold, fontWeight: "700", marginLeft: 62, marginTop: 8 }}>
+                  {money(s.amount, cur)} / {s.cycle}
+                </Text>
+                <Text style={[{ fontSize: 13, fontFamily: fonts.body, marginLeft: 62, marginTop: 2 }, overdue ? { color: colors.danger, fontWeight: "700", fontFamily: fonts.bodyBold } : { color: colors.muted }]}>
+                  {formatRenewal(s)}
+                </Text>
                 <TouchableOpacity style={styles.paid} onPress={() => handleMarkPaid(s.id)} accessibilityLabel={`Mark ${s.name} paid`}>
                   <Ionicons name="checkmark-circle-outline" size={18} color="#2F6B30" />
                   <Text style={styles.paidText}>Mark paid</Text>
@@ -148,8 +148,6 @@ const styles = StyleSheet.create({
   newSub: { flexDirection: "row", gap: 6, backgroundColor: colors.ink, borderRadius: 99, paddingVertical: 12, alignItems: "center", justifyContent: "center", marginBottom: 14 },
   newSubText: { color: "#fff", fontWeight: "700", fontFamily: fonts.bodyBold },
   row: { flexDirection: "row", alignItems: "center", gap: 12 },
-  status: { fontSize: 12, fontWeight: "700", fontFamily: fonts.bodyBold, color: colors.muted },
-  statusOver: { color: colors.danger },
   paid: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, backgroundColor: colors.successSoft, borderRadius: 99, paddingVertical: 10, marginTop: 12 },
   paidText: { color: "#2F6B30", fontWeight: "800", fontFamily: fonts.bodyXB, fontSize: 13 },
 });
