@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Ember Finance",
+    "slug": "ember-finance",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FAF7F2"
+    },
+    "android": {
+      "package": "com.ember.finance",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#C86E4B"
+      }
+    },
+    "scheme": "ember-finance",
+    "plugins": [
+      "./plugins/withReleaseSigning",
+      "expo-notifications",
+      [
+        "expo-camera",
+        { "cameraPermission": "Allow Ember Finance to scan QR payment codes." }
+      ],
+      "./plugins/withPaymentQueries"
+    ]
+  }
+}

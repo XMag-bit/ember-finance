@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ember Finance - Professional Icons Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script type="module" src="https://unpkg.com/ionicons@7.2.2/dist/ionicons/ionicons.esm.js"></script>
+<style>
+:root{--bg:#FAF7F2;--surface:#fff;--border:#E8E2DC;--ink:#1C1917;--muted:#78716C;--accent:#C86E4B;--dark:#1E1A16;--green:#5B8C5A;}
+*{box-sizing:border-box}body{margin:0;background:#EFE8DD;font-family:Inter,system-ui;color:var(--ink)}
+.wrap{max-width:1400px;margin:0 auto;padding:32px 20px 60px}
+h1{font-family:Fraunces,serif;font-size:42px;margin:0;letter-spacing:-1px}
+.sub{color:var(--muted);margin:6px 0 22px}
+.grid{display:flex;gap:26px;flex-wrap:wrap;justify-content:center}
+.phone{width:375px;height:812px;background:var(--bg);border-radius:48px;border:10px solid #111;overflow:hidden;position:relative;box-shadow:0 30px 60px rgba(0,0,0,.25);display:flex;flex-direction:column}
+.screen{flex:1;overflow-y:auto;padding:18px 16px 110px;scrollbar-width:none}.screen::-webkit-scrollbar{display:none}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:120px;height:28px;background:#111;border-radius:99px;z-index:5}
+.hdr{display:flex;align-items:center;gap:10px;margin:28px 0 14px}
+.page-head{margin:28px 0 14px}
+.page-head h2{font-family:Fraunces,serif;font-size:30px;font-weight:800;margin:0;letter-spacing:-.5px}
+.page-head p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.avatar{width:44px;height:44px;border-radius:22px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
+.hero{background:var(--dark);border-radius:26px;padding:18px;color:#fff}
+.hero small{color:#B8AEA4;letter-spacing:1.2px;font-weight:700;font-size:10px}
+.bal{font-family:Fraunces,serif;font-size:38px;font-weight:800;margin:4px 0}
+.bars{display:flex;justify-content:space-between;align-items:flex-end;background:rgba(255,255,255,.07);border-radius:16px;padding:10px;margin-top:12px}
+.bar{width:14px;border-radius:7px}.barw{text-align:center;font-size:10px;color:#8A8178;font-weight:700}
+.q{display:flex;justify-content:space-between;margin:14px 0}
+.q div{text-align:center;font-size:12px;font-weight:600}.q span{display:flex;width:54px;height:54px;background:#fff;border:1px solid var(--border);border-radius:18px;align-items:center;justify-content:center;margin-bottom:4px}
+.q ion-icon{font-size:24px;color:var(--ink)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:14px;margin-bottom:12px}
+.row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F1ECE5}.row:last-child{border:0}
+.ic{width:42px;height:42px;border-radius:14px;background:#F6F1EA;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ic ion-icon{font-size:21px;color:#44403C}
+.t{font-size:14px;font-weight:700}.s{font-size:12px;color:var(--muted)}
+.p{height:8px;background:#F1ECE5;border-radius:99px;overflow:hidden}.p i{display:block;height:8px;border-radius:99px}
+.tabbar{position:absolute;bottom:14px;left:14px;right:14px;background:var(--dark);border-radius:24px;height:64px;display:flex;align-items:center;justify-content:space-around;color:#8A8178}
+.tabbar ion-icon{font-size:22px}.tabbar .on{color:#fff;background:var(--accent);border-radius:14px;padding:4px 10px}
+.fab{width:56px;height:56px;border-radius:28px;background:var(--accent);display:flex;align-items:center;justify-content:center;margin-top:-30px;border:4px solid var(--bg)}
+.fab ion-icon{font-size:28px;color:#fff}
+.cap{text-align:center;font-weight:800;margin:14px 0 6px;font-family:Fraunces,serif;font-size:22px}
+.pill{display:inline-block;padding:7px 14px;border-radius:99px;background:#fff;border:1px solid var(--border);font-size:12px;font-weight:700;margin:0 6px 8px 0}.pill.on{background:var(--ink);color:#fff}
+.cta{background:var(--accent);color:#fff;text-align:center;font-weight:800;padding:16px;border-radius:16px;margin-top:14px}
+input{width:100%;border:1px solid var(--border);border-radius:14px;padding:13px;font-size:15px;font-family:inherit}
+.badge{font-size:11px;font-weight:800;padding:4px 10px;border-radius:99px}
+.sys{background:#F3EEE7;border:1px solid var(--border);border-radius:16px;padding:12px;margin-bottom:14px;font-size:12.5px;color:#57534E}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Ember Finance</h1>
+<div class="sub">Professional icon set · Ionicons outline · Zero emoji · <b>App.tsx + src/</b> updated. New: editable <b>Profile</b> screen (phone 7).</div>
+<div class="sys"><b>Icon system:</b> AppIcon.tsx - 22px Ionicons outline in 44px warm tiles. Tabs: home / receipt / pie-chart / trophy. Categories: briefcase, cart, home, cafe, car, color-palette, tv, speedometer, restaurant, bag-handle, card, shield-checkmark, airplane, laptop.</div>
+<div class="grid">
+<div><div class="cap">1 · Home</div><div class="phone"><div class="notch"></div><div class="screen">
+<div class="hdr"><div class="avatar">M</div><div><div style="font-weight:800">Good morning, Maya</div><div class="s">Let's check your money today</div></div><div style="margin-left:auto" class="ic"><ion-icon name="notifications-outline"></ion-icon></div></div>
+<div class="hero"><small>TOTAL BALANCE</small><div class="bal">$12,480.55</div>
+<div style="display:flex;gap:10px;font-size:13px;align-items:center"><div>Income<br><b>$6,420</b></div><div>Spent<br><b>$3,182</b></div><div style="margin-left:auto;background:var(--accent);padding:8px 14px;border-radius:99px;font-weight:800">Insight</div></div>
+<div class="bars"><div class="barw"><div class="bar" style="height:34px;background:rgba(255,255,255,.22)"></div>M</div><div class="barw"><div class="bar" style="height:52px;background:rgba(255,255,255,.22)"></div>T</div><div class="barw"><div class="bar" style="height:28px;background:rgba(255,255,255,.22)"></div>W</div><div class="barw"><div class="bar" style="height:62px;background:rgba(255,255,255,.22)"></div>T</div><div class="barw"><div class="bar" style="height:44px;background:rgba(255,255,255,.22)"></div>F</div><div class="barw"><div class="bar" style="height:74px;background:var(--accent)"></div>S</div><div class="barw"><div class="bar" style="height:26px;background:rgba(255,255,255,.22)"></div>S</div></div></div>
+<div class="q"><div><span><ion-icon name="add-circle-outline"></ion-icon></span>Add</div><div><span><ion-icon name="swap-horizontal-outline"></ion-icon></span>Transfer</div><div><span><ion-icon name="trophy-outline"></ion-icon></span>Goals</div><div><span><ion-icon name="stats-chart-outline"></ion-icon></span>Insight</div></div>
+<div style="font-weight:800;margin-bottom:8px">October budgets</div>
+<div class="card"><div class="row"><div class="ic"><ion-icon name="cart-outline"></ion-icon></div><div style="flex:1"><div class="t">Groceries <span style="float:right;color:var(--muted);font-weight:400;font-size:12px">$342 / $500</span></div><div class="p" style="margin-top:8px"><i style="width:68%;background:var(--accent)"></i></div></div></div>
+<div class="row"><div class="ic"><ion-icon name="restaurant-outline"></ion-icon></div><div style="flex:1"><div class="t">Dining Out <span style="float:right;color:var(--muted);font-weight:400;font-size:12px">$218 / $250</span></div><div class="p" style="margin-top:8px"><i style="width:87%;background:#D9A441"></i></div></div></div></div>
+<div style="font-weight:800;margin-bottom:8px">Recent activity</div>
+<div class="card"><div class="row"><div class="ic"><ion-icon name="briefcase-outline"></ion-icon></div><div><div class="t">Salary - Northwind</div><div class="s">Income · Today</div></div><div style="margin-left:auto;font-weight:800;color:var(--green)">+$4,200.00</div></div>
+<div class="row"><div class="ic"><ion-icon name="cart-outline"></ion-icon></div><div><div class="t">Whole Foods Market</div><div class="s">Groceries · Today</div></div><div style="margin-left:auto;font-weight:800">−$86.42</div></div>
+<div class="row"><div class="ic"><ion-icon name="home-outline"></ion-icon></div><div><div class="t">Rent - October</div><div class="s">Housing · Yesterday</div></div><div style="margin-left:auto;font-weight:800">−$1,450.00</div></div></div>
+</div><div class="tabbar"><span class="on"><ion-icon name="home-outline"></ion-icon></span><span><ion-icon name="receipt-outline"></ion-icon></span><span class="fab"><ion-icon name="add-outline"></ion-icon></span><span><ion-icon name="pie-chart-outline"></ion-icon></span><span><ion-icon name="trophy-outline"></ion-icon></span></div></div></div>
+<div><div class="cap">2 · Transactions</div><div class="phone"><div class="notch"></div><div class="screen">
+<div class="page-head"><h2>Transactions</h2><p>8 records · October 2026</p></div>
+<div class="card" style="border-radius:99px;margin-top:10px;display:flex;gap:8;align-items:center;flex-direction:row"><ion-icon name="search-outline" style="color:var(--muted)"></ion-icon><span class="s">Search coffee, rent, salary…</span></div>
+<div><span class="pill on">All</span><span class="pill">Income</span><span class="pill">Expenses</span><span class="pill">Groceries</span></div>
+<div class="card"><div class="row"><div class="ic"><ion-icon name="cafe-outline"></ion-icon></div><div><div class="t">Blue Bottle Coffee</div><div class="s">Dining · Yesterday</div></div><div style="margin-left:auto;font-weight:800">−$6.80</div></div>
+<div class="row"><div class="ic"><ion-icon name="car-outline"></ion-icon></div><div><div class="t">Uber Trip</div><div class="s">Transport · Oct 10</div></div><div style="margin-left:auto;font-weight:800">−$23.50</div></div>
+<div class="row"><div class="ic"><ion-icon name="color-palette-outline"></ion-icon></div><div><div class="t">Freelance - Logo pack</div><div class="s">Income · Oct 9</div></div><div style="margin-left:auto;font-weight:800;color:var(--green)">+$680.00</div></div>
+<div class="row"><div class="ic"><ion-icon name="tv-outline"></ion-icon></div><div><div class="t">Netflix</div><div class="s">Subscriptions · Oct 8</div></div><div style="margin-left:auto;font-weight:800">−$15.99</div></div></div>
+</div><div class="tabbar"><span><ion-icon name="home-outline"></ion-icon></span><span class="on"><ion-icon name="receipt-outline"></ion-icon></span><span class="fab"><ion-icon name="add-outline"></ion-icon></span><span><ion-icon name="pie-chart-outline"></ion-icon></span><span><ion-icon name="trophy-outline"></ion-icon></span></div></div></div>
+<div><div class="cap">3 · Add</div><div class="phone"><div class="notch"></div><div class="screen">
+<div class="page-head"><h2>Add transaction</h2><p>Expense / Income toggle · large amount</p></div>
+<div class="hero" style="text-align:center"><small>YOU'RE SPENDING</small><div class="bal">$ 42.50</div><div class="s" style="color:#8A8178">$10 · $25 · $50 · $100</div></div>
+<div style="font-weight:800;margin:12px 0 6px">Category</div><input placeholder="Type a category, e.g. Pets" value="Pets"/>
+<div style="font-weight:800;margin:8px 0 6px">Note</div><input placeholder="Weekly groceries at Whole Foods"/>
+<div class="cta">Save Expense</div>
+</div><div class="tabbar"><span><ion-icon name="home-outline"></ion-icon></span><span><ion-icon name="receipt-outline"></ion-icon></span><span class="fab"><ion-icon name="add-outline"></ion-icon></span><span><ion-icon name="pie-chart-outline"></ion-icon></span><span><ion-icon name="trophy-outline"></ion-icon></span></div></div></div>
+<div><div class="cap">4 · Budgets</div><div class="phone"><div class="notch"></div><div class="screen">
+<div class="page-head"><h2>Budgets</h2><p>October · $1,166 of $1,430 used</p></div>
+<div class="hero"><small>OVERALL · 82% USED</small><div class="p" style="background:rgba(255,255,255,.15);margin-top:10px"><i style="width:82%;background:var(--accent)"></i></div><div class="s" style="color:#8A8178;margin-top:6px">$264 left · 19 days to go</div></div>
+<div class="card" style="margin-top:12px"><div class="row"><div class="ic"><ion-icon name="cart-outline"></ion-icon></div><div style="flex:1"><div class="t">Groceries <span class="badge" style="float:right;background:#E3EFE3;color:#2F6B30">68%</span></div><div class="p" style="margin-top:8px"><i style="width:68%;background:var(--accent)"></i></div></div></div></div>
+<div class="card"><div class="row"><div class="ic"><ion-icon name="bag-handle-outline"></ion-icon></div><div style="flex:1"><div class="t">Shopping <span class="badge" style="float:right;background:#FBE3DF;color:#9C2F23">Over $10</span></div><div class="p" style="margin-top:8px"><i style="width:100%;background:#C14A3A"></i></div></div></div></div>
+<div class="card"><div class="row"><div class="ic"><ion-icon name="car-outline"></ion-icon></div><div style="flex:1"><div class="t">Transport <span class="badge" style="float:right;background:#E3EFE3;color:#2F6B30">66%</span></div><div class="p" style="margin-top:8px"><i style="width:66%;background:var(--accent)"></i></div></div></div></div>
+</div><div class="tabbar"><span><ion-icon name="home-outline"></ion-icon></span><span><ion-icon name="receipt-outline"></ion-icon></span><span class="fab"><ion-icon name="add-outline"></ion-icon></span><span class="on"><ion-icon name="pie-chart-outline"></ion-icon></span><span><ion-icon name="trophy-outline"></ion-icon></span></div></div></div>
+<div><div class="cap">5 · Goals</div><div class="phone"><div class="notch"></div><div class="screen">
+<div class="page-head"><h2>Goals & savings</h2><p>$7,950 saved across 3 goals</p></div>
+<div class="cta" style="background:var(--ink);margin:10px 0">New goal</div>
+<div class="card"><div class="row"><div class="ic"><ion-icon name="shield-checkmark-outline"></ion-icon></div><div style="flex:1"><div class="t">Emergency Fund <span style="float:right;color:var(--accent)">52%</span></div><div class="s">$5,200 / $10,000</div><div class="p" style="margin-top:8px"><i style="width:52%;background:var(--green)"></i></div></div></div></div>
+<div class="card"><div class="row"><div class="ic"><ion-icon name="airplane-outline"></ion-icon></div><div style="flex:1"><div class="t">Japan Trip <span style="float:right;color:var(--accent)">62%</span></div><div class="s">$1,850 / $3,000</div><div class="p" style="margin-top:8px"><i style="width:62%;background:var(--green)"></i></div></div></div></div>
+<div class="card"><div class="row"><div class="ic"><ion-icon name="laptop-outline"></ion-icon></div><div style="flex:1"><div class="t">New MacBook <span style="float:right;color:var(--accent)">41%</span></div><div class="s">$900 / $2,200</div><div class="p" style="margin-top:8px"><i style="width:41%;background:var(--green)"></i></div></div></div></div>
+</div><div class="tabbar"><span><ion-icon name="home-outline"></ion-icon></span><span><ion-icon name="receipt-outline"></ion-icon></span><span class="fab"><ion-icon name="add-outline"></ion-icon></span><span><ion-icon name="pie-chart-outline"></ion-icon></span><span class="on"><ion-icon name="trophy-outline"></ion-icon></span></div></div></div>
+<div><div class="cap">6 · Insight (one screen, no scroll)</div><div class="phone"><div class="notch"></div><div class="screen" style="overflow:hidden">
+<div class="page-head" style="margin:20px 0 10px"><h2 style="font-size:26px">Insight</h2><p>September vs October</p></div>
+<div style="display:flex;gap:10px">
+<div class="card" style="flex:1;padding:12px"><div style="display:flex;gap:7px;align-items:center"><div class="ic" style="width:30px;height:30px"><ion-icon name="wallet-outline" style="font-size:17px"></ion-icon></div><div class="s" style="font-weight:800;letter-spacing:.8px;font-size:11px">SPENT</div></div><div style="font-size:20px;font-weight:800;margin-top:6px">$3,182</div><div class="badge" style="background:#E3EFE3;color:#2F6B30;margin-top:6px;display:inline-block">↓ 8% vs Sep</div></div>
+<div class="card" style="flex:1;padding:12px"><div style="display:flex;gap:7px;align-items:center"><div class="ic" style="width:30px;height:30px"><ion-icon name="leaf-outline" style="font-size:17px"></ion-icon></div><div class="s" style="font-weight:800;letter-spacing:.8px;font-size:11px">SAVED</div></div><div style="font-size:20px;font-weight:800;margin-top:6px">$2,184</div><div class="badge" style="background:#E3EFE3;color:#2F6B30;margin-top:6px;display:inline-block">↑ 12% vs Sep</div></div>
+</div>
+<div class="card" style="padding:12px"><div style="display:flex;gap:7px;align-items:center"><div class="ic" style="width:30px;height:30px"><ion-icon name="pie-chart-outline" style="font-size:17px"></ion-icon></div><div class="t" style="flex:1;font-size:14px">Savings rate</div><div style="font-weight:800;color:var(--green);font-size:14px">34%</div></div><div class="p" style="margin-top:8px"><i style="width:34%;background:var(--green)"></i></div><div class="s" style="margin-top:6px;font-size:12px">Best month yet - top 20% of savers.</div></div>
+<div class="t" style="font-size:16px;margin:2px 0 8px">Top categories</div>
+<div class="card" style="padding:12px"><div class="t" style="font-size:13.5px">Housing <span style="float:right;color:var(--muted);font-weight:400;font-size:12px">60% · $1,450</span></div><div class="p" style="height:8px"><i style="width:100%;background:var(--ink)"></i></div><div style="height:7px"></div>
+<div class="t" style="font-size:13.5px">Shopping <span style="float:right;color:var(--muted);font-weight:400;font-size:12px">17% · $410</span></div><div class="p" style="height:8px"><i style="width:28%;background:#D9A441"></i></div><div style="height:7px"></div>
+<div class="t" style="font-size:13.5px">Groceries <span style="float:right;color:var(--muted);font-weight:400;font-size:12px">14% · $342</span></div><div class="p" style="height:8px"><i style="width:24%;background:var(--accent)"></i></div><div style="height:7px"></div>
+<div class="t" style="font-size:13.5px">Dining <span style="float:right;color:var(--muted);font-weight:400;font-size:12px">9% · $218</span></div><div class="p" style="height:8px"><i style="width:15%;background:#7FA6A3"></i></div></div>
+<div class="hero" style="margin-top:0;padding:14px"><b style="font-size:14.5px">October report ready</b><div class="s" style="color:#B8AEA4;margin-top:5px;font-size:12.5px;line-height:18px">You saved 34% of income. Dining is 87% of budget.</div><div class="cta" style="padding:10px;font-size:14px">Plan November →</div></div>
+</div><div class="tabbar"><span><ion-icon name="home-outline"></ion-icon></span><span><ion-icon name="receipt-outline"></ion-icon></span><span class="fab"><ion-icon name="add-outline"></ion-icon></span><span><ion-icon name="pie-chart-outline"></ion-icon></span><span><ion-icon name="trophy-outline"></ion-icon></span></div></div></div>
+<div><div class="cap">8 · Notifications</div><div class="phone"><div class="notch"></div><div class="screen">
+<div class="page-head"><h2>Notifications</h2><p>3 active</p></div>
+<div class="card"><div class="row"><div class="ic" style="background:#FBE3DF"><ion-icon name="alert-circle-outline"></ion-icon></div><div style="flex:1"><div class="t">Shopping is over budget</div><div class="s">$410 spent of $400. Consider pausing until next month.</div></div></div></div>
+<div class="card"><div class="row"><div class="ic" style="background:#FBF0D3"><ion-icon name="warning-outline"></ion-icon></div><div style="flex:1"><div class="t">Dining Out is at 87%</div><div class="s">$32 left in this budget.</div></div></div></div>
+<div class="card"><div class="row"><div class="ic" style="background:#E3EFE3"><ion-icon name="trophy-outline"></ion-icon></div><div style="flex:1"><div class="t">Emergency Fund passed halfway</div><div class="s">$4,800 to go.</div></div></div></div>
+</div><div class="tabbar"><span class="on"><ion-icon name="home-outline"></ion-icon></span><span><ion-icon name="receipt-outline"></ion-icon></span><span class="fab"><ion-icon name="add-outline"></ion-icon></span><span><ion-icon name="pie-chart-outline"></ion-icon></span><span><ion-icon name="trophy-outline"></ion-icon></span></div></div></div>
+<div><div class="cap">7 · Profile (editable)</div><div class="phone"><div class="notch"></div><div class="screen">
+<div class="page-head"><h2>Profile</h2><p>Edit your personal details</p></div>
+<div class="card" style="display:flex;gap:10px;align-items:center;flex-direction:row"><div class="avatar" style="margin:0">M</div><div style="flex:1"><div class="t">Maya</div><div class="s">maya@example.com</div></div><ion-icon name="pencil-outline" style="color:var(--muted)"></ion-icon></div>
+<div style="font-weight:800;margin:12px 0 6px;font-size:14px">Full name</div><input value="Maya"/>
+<div style="font-weight:800;margin:12px 0 6px;font-size:14px">Email</div><input value="maya@example.com"/>
+<div style="font-weight:800;margin:12px 0 6px;font-size:14px">Currency</div>
+<div><span class="pill on">USD</span><span class="pill">EUR</span><span class="pill">GBP</span><span class="pill">PHP</span><span class="pill">JPY</span><span class="pill">IDR</span></div>
+<div class="cta">Save changes</div>
+<div class="card" style="margin-top:10px;text-align:center;font-weight:700">Cancel</div>
+</div><div class="tabbar"><span class="on"><ion-icon name="home-outline"></ion-icon></span><span><ion-icon name="receipt-outline"></ion-icon></span><span class="fab"><ion-icon name="add-outline"></ion-icon></span><span><ion-icon name="pie-chart-outline"></ion-icon></span><span><ion-icon name="trophy-outline"></ion-icon></span></div></div></div>
+</div>
+</div>
+</body></html>

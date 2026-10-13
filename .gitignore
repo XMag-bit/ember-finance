@@ -1,0 +1,24 @@
+# Signing keys - NEVER commit these.
+# If you lose the release keystore (or its passwords), Google Play will
+# reject every future update and you can never ship under the same app
+# signature again. Back up D:\Keys\ember-release.keystore + passwords offline.
+*.keystore
+*.jks
+
+# Generated native projects - recreated with:
+#   npx expo prebuild --platform android --clean
+# (then re-apply the local fixes documented in ANDROID_SETUP.md)
+android/
+ios/
+
+# Build outputs
+*.apk
+*.aab
+
+# Deps / caches (recreated by npm / expo).
+node_modules/
+.expo/
+
+# IDE
+.idea/
+.vscode/
