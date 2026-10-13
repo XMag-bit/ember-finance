@@ -2,7 +2,7 @@
 
 Warm Earth UI · Personal tracker · Expo + React Native (APK-ready)
 
-## Screens (v1 - production)
+## Screens
 1. **Home** - live balance hero, last-7-days spend bars (real weekday labels), month income/spent from records, budgets preview, recent activity, goals preview. Avatar / person icon → Profile, bell → Notifications (dot only when alerts exist). All "See all" links navigate.
 2. **Transactions** - live records, search + filter pills, long-press to delete with confirm.
 3. **Add (FAB modal)** - Expense/Income toggle, big amount input, quick amounts, manual-typing category field (no preset list), note, working day stepper. Saving writes to records instantly.
