@@ -3,10 +3,12 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvo
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, spacing, fonts } from "../theme";
-import { CURRENCY_SYMBOLS } from "../data/mock";
+import { CATEGORY_ICONS, CURRENCY_SYMBOLS, categories } from "../data/mock";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Calendar } from "../components/Calendar";
 import { AmountInput } from "../components/AmountInput";
+import { CategorySheet } from "../components/CategorySheet";
+import { AppIcon } from "../components/AppIcon";
 import { FadeInView, SlideUpSheet } from "../components/motion";
 import { useProfile } from "../store/UserContext";
 import { useTxs } from "../store/TxContext";
@@ -24,7 +26,7 @@ function isToday(d: Date): boolean {
 
 export function AddTransactionScreen({ navigation, route }: any) {
   const { profile } = useProfile();
-  const { txs, addTx, updateTx, removeTx } = useTxs();
+  const { txs, customCats, addTx, updateTx, removeTx } = useTxs();
   const symbol = CURRENCY_SYMBOLS[profile.currency as keyof typeof CURRENCY_SYMBOLS] ?? "$";
   const editingId: string | undefined = route?.params?.id;
   const existing = txs.find((t) => t.id === editingId);
@@ -34,6 +36,7 @@ export function AddTransactionScreen({ navigation, route }: any) {
   const [note, setNote] = useState<string>(existing?.title ?? "");
   const [day, setDay] = useState(() => atNoon(existing ? new Date(existing.ts) : new Date()));
   const [calOpen, setCalOpen] = useState(false);
+  const [catOpen, setCatOpen] = useState(false);
   const [method, setMethod] = useState<string | null>(existing?.paymentMethod ?? null);
 
   const methodsInUse = React.useMemo(() => {
@@ -159,16 +162,14 @@ export function AddTransactionScreen({ navigation, route }: any) {
             </View>
           </FadeInView>
           <FadeInView delay={170}>
-          <TextInput
-            value={cat}
-            onChangeText={setCat}
-            placeholder="Type a category, e.g. Pets"
-            autoCapitalize="words"
-            returnKeyType="next"
-            style={styles.input}
-            placeholderTextColor={colors.faint}
-            accessibilityLabel="Category"
-          />
+          <TouchableOpacity onPress={() => setCatOpen(true)} style={styles.catButton} accessibilityLabel="Pick category">
+            <AppIcon name={CATEGORY_ICONS[cat] ?? "receipt-outline"} tileSize={42} size={20} />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.catText}>{cat || "Pick a category"}</Text>
+              <Text style={styles.catSub}>Tap to change</Text>
+            </View>
+            <Ionicons name="chevron-forward-outline" size={18} color={colors.muted} />
+          </TouchableOpacity>
           </FadeInView>
           <FadeInView delay={210}>
             <Text style={styles.label}>Note</Text>
@@ -251,6 +252,17 @@ export function AddTransactionScreen({ navigation, route }: any) {
           }}
         />
       </SlideUpSheet>
+      <CategorySheet
+        visible={catOpen}
+        onClose={() => setCatOpen(false)}
+        title="Category"
+        options={[...categories, ...customCats]}
+        selected={[cat]}
+        onToggle={(name) => {
+          setCat(name);
+          setCatOpen(false);
+        }}
+      />
     </SafeAreaView>
   );
 }
@@ -276,6 +288,18 @@ const styles = StyleSheet.create({
   methodText: { fontWeight: "600", fontFamily: fonts.bodyMedium, color: colors.ink2, fontSize: 13 },
   methodTextActive: { color: "#fff" },
   input: { backgroundColor: "#fff", borderWidth: 1, borderColor: colors.border, borderRadius: 14, padding: 14, fontSize: 15 , fontFamily: fonts.body},
+  catButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 14,
+    padding: 12,
+  },
+  catText: { fontSize: 16, fontWeight: "700", fontFamily: fonts.bodyBold, color: colors.ink },
+  catSub: { fontSize: 13, fontFamily: fonts.body, color: colors.muted, marginTop: 2 },
   dateButton: {
     flexDirection: "row",
     alignItems: "center",

@@ -4,30 +4,42 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, spacing, fonts } from "../theme";
 import { Card } from "../components/ui";
-import { FadeInView } from "../components/motion";
+import { FadeInView, SlideUpSheet } from "../components/motion";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { AppIcon } from "../components/AppIcon";
 import { AmountInput } from "../components/AmountInput";
+import { CategorySheet } from "../components/CategorySheet";
 import { categories, CATEGORY_ICONS, money } from "../data/mock";
 import { useTxs } from "../store/TxContext";
 import { useProfile } from "../store/UserContext";
 
-export const PAY_METHODS = [
-  "Cash",
-  "GoPay",
-  "OVO",
-  "DANA",
-  "ShopeePay",
-  "LinkAja",
-  "BCA mobile",
-  "BRI (BRImo)",
-  "Mandiri (Livin')",
-  "BNI",
-  "Other bank",
+export const E_MONEY_GROUPS = [
+  {
+    title: "International",
+    methods: ["PayPal", "Apple Pay", "Google Pay", "Samsung Pay", "Alipay", "WeChat Pay", "GrabPay"],
+  },
+  {
+    title: "Indonesia",
+    methods: [
+      "GoPay",
+      "OVO",
+      "DANA",
+      "ShopeePay",
+      "LinkAja",
+      "BCA mobile",
+      "BRI (BRImo)",
+      "Mandiri (Livin')",
+      "BNI",
+      "Other bank",
+    ],
+  },
 ];
 
-/** Best-effort URL schemes per method. Missing entry = open manually. */
+/** Best-effort URL schemes per provider. Missing entry = open manually. */
 const APP_SCHEMES: Record<string, string> = {
+  PayPal: "paypal://",
+  Alipay: "alipay://",
+  "WeChat Pay": "weixin://",
   GoPay: "gopay://",
   OVO: "ovo://",
   DANA: "dana://",
@@ -51,26 +63,33 @@ export function PayConfirmScreen({ navigation, route }: any) {
 
   const [amount, setAmount] = useState<number>(scanned);
   const [cat, setCat] = useState<string>("Food");
+  const [catOpen, setCatOpen] = useState(false);
   const [method, setMethod] = useState<string>(profile.lastPayMethod || "Cash");
   const [customName, setCustomName] = useState("");
-  const [showCustom, setShowCustom] = useState(false);
+  const [emOpen, setEmOpen] = useState(false);
 
-  const methods = [...PAY_METHODS, ...profile.customPayMethods.filter((m) => !PAY_METHODS.includes(m))];
-  const choices = [...categories.filter((c) => c !== "Income"), ...customCats];
+  const isCash = method === "Cash";
+  const customs = profile.customPayMethods.filter(
+    (m) => m !== "Cash" && !E_MONEY_GROUPS.some((g) => g.methods.includes(m))
+  );
+
+  function pickProvider(name: string) {
+    setMethod(name);
+    setEmOpen(false);
+  }
   const nonIdr = cur !== "IDR";
 
   function handleAddCustom() {
     const name = customName.trim();
     if (name.length < 2) {
-      Alert.alert("Name it", "Give the method at least 2 characters.");
+      Alert.alert("Name it", "Give the provider at least 2 characters.");
       return;
     }
-    if (!profile.customPayMethods.includes(name) && !PAY_METHODS.includes(name)) {
+    if (name !== "Cash" && !profile.customPayMethods.includes(name)) {
       updateProfile({ ...profile, customPayMethods: [...profile.customPayMethods, name] });
     }
-    setMethod(name);
+    pickProvider(name);
     setCustomName("");
-    setShowCustom(false);
   }
 
   async function handleOpenApp() {
@@ -144,67 +163,45 @@ export function PayConfirmScreen({ navigation, route }: any) {
         <FadeInView delay={120}>
           <Card style={{ marginBottom: 14 }}>
             <Text style={styles.label}>Category</Text>
-            <View style={styles.chipRow}>
-              {choices.map((c) => {
-                const active = cat === c;
-                return (
-                  <TouchableOpacity
-                    key={c}
-                    onPress={() => setCat(c)}
-                    style={[styles.chip, active && styles.chipActive]}
-                    accessibilityLabel={`Category ${c}`}
-                    accessibilityState={{ selected: active }}
-                  >
-                    <Ionicons
-                      name={(CATEGORY_ICONS[c] ?? "receipt-outline") as React.ComponentProps<typeof Ionicons>["name"]}
-                      size={15}
-                      color={active ? "#fff" : colors.ink2}
-                    />
-                    <Text style={[styles.chipText, active && styles.chipTextActive]}>{c}</Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
+            <TouchableOpacity onPress={() => setCatOpen(true)} style={styles.catButton} accessibilityLabel="Pick category">
+              <AppIcon name={CATEGORY_ICONS[cat] ?? "receipt-outline"} tileSize={42} size={20} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.catText}>{cat || "Pick a category"}</Text>
+                <Text style={styles.catSub}>Tap to change</Text>
+              </View>
+              <Ionicons name="chevron-forward-outline" size={18} color={colors.muted} />
+            </TouchableOpacity>
 
             <Text style={styles.label}>Payment method</Text>
-            <View style={styles.chipRow}>
-              {methods.map((m) => {
-                const active = method === m;
-                return (
-                  <TouchableOpacity
-                    key={m}
-                    onPress={() => setMethod(m)}
-                    style={[styles.chip, active && styles.chipActive]}
-                    accessibilityLabel={`Pay with ${m}`}
-                    accessibilityState={{ selected: active }}
-                  >
-                    <Text style={[styles.chipText, active && styles.chipTextActive]}>{m}</Text>
-                  </TouchableOpacity>
-                );
-              })}
+            <View style={styles.kindRow}>
               <TouchableOpacity
-                onPress={() => setShowCustom((v) => !v)}
-                style={styles.chip}
-                accessibilityLabel="Add custom method"
+                onPress={() => setMethod("Cash")}
+                style={[styles.kind, isCash && styles.kindActive]}
+                accessibilityLabel="Pay with cash"
+                accessibilityState={{ selected: isCash }}
               >
-                <Ionicons name="add-outline" size={15} color={colors.ink2} />
-                <Text style={styles.chipText}>Custom</Text>
+                <Ionicons name="cash-outline" size={18} color={isCash ? "#fff" : colors.ink2} />
+                <Text style={[styles.kindText, isCash && styles.kindTextActive]}>Cash</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setEmOpen(true)}
+                style={[styles.kind, !isCash && styles.kindActive]}
+                accessibilityLabel="Pay with e-money"
+                accessibilityState={{ selected: !isCash }}
+              >
+                <Ionicons name="wallet-outline" size={18} color={!isCash ? "#fff" : colors.ink2} />
+                <Text style={[styles.kindText, !isCash && styles.kindTextActive]}>E-money</Text>
               </TouchableOpacity>
             </View>
-            {showCustom ? (
-              <View style={styles.customRow}>
-                <TextInput
-                  value={customName}
-                  onChangeText={setCustomName}
-                  placeholder="e.g. Jenius"
-                  style={[styles.input, { flex: 1, marginTop: 0 }]}
-                  placeholderTextColor={colors.faint}
-                  accessibilityLabel="Custom method name"
-                />
-                <TouchableOpacity onPress={handleAddCustom} style={styles.customAdd} accessibilityLabel="Add method">
-                  <Text style={styles.customAddText}>Add</Text>
-                </TouchableOpacity>
-              </View>
+            {!isCash ? (
+              <TouchableOpacity onPress={() => setEmOpen(true)} style={styles.providerRow} accessibilityLabel="Change e-money provider">
+                <Ionicons name="card-outline" size={20} color={colors.accent} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.providerName}>{method}</Text>
+                  <Text style={styles.providerSub}>Tap to change provider</Text>
+                </View>
+                <Ionicons name="chevron-forward-outline" size={18} color={colors.muted} />
+              </TouchableOpacity>
             ) : null}
 
             {APP_SCHEMES[method] ? (
@@ -223,6 +220,80 @@ export function PayConfirmScreen({ navigation, route }: any) {
           </Card>
         </FadeInView>
       </ScrollView>
+
+      <SlideUpSheet visible={emOpen} onClose={() => setEmOpen(false)} closeLabel="Close providers">
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+          <Text style={{ fontSize: 18, fontWeight: "800", fontFamily: fonts.bodyXB, color: colors.ink }}>
+            Pay with e-money
+          </Text>
+        </View>
+        {E_MONEY_GROUPS.map((g) => (
+          <View key={g.title}>
+            <Text style={styles.groupTitle}>{g.title}</Text>
+            <View style={styles.chipRow}>
+              {g.methods.map((m) => {
+                const active = method === m;
+                return (
+                  <TouchableOpacity
+                    key={m}
+                    onPress={() => pickProvider(m)}
+                    style={[styles.chip, active && styles.chipActive]}
+                    accessibilityLabel={`Pay with ${m}`}
+                    accessibilityState={{ selected: active }}
+                  >
+                    <Text style={[styles.chipText, active && styles.chipTextActive]}>{m}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+        ))}
+        {customs.length > 0 ? (
+          <>
+            <Text style={styles.groupTitle}>Custom</Text>
+            <View style={styles.chipRow}>
+              {customs.map((m) => {
+                const active = method === m;
+                return (
+                  <TouchableOpacity
+                    key={m}
+                    onPress={() => pickProvider(m)}
+                    style={[styles.chip, active && styles.chipActive]}
+                    accessibilityLabel={`Pay with ${m}`}
+                    accessibilityState={{ selected: active }}
+                  >
+                    <Text style={[styles.chipText, active && styles.chipTextActive]}>{m}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </>
+        ) : null}
+        <View style={styles.customRow}>
+          <TextInput
+            value={customName}
+            onChangeText={setCustomName}
+            placeholder="e.g. Jenius"
+            style={[styles.input, { flex: 1, marginTop: 0 }]}
+            placeholderTextColor={colors.faint}
+            accessibilityLabel="Custom provider name"
+          />
+          <TouchableOpacity onPress={handleAddCustom} style={styles.customAdd} accessibilityLabel="Add provider">
+            <Text style={styles.customAddText}>Add</Text>
+          </TouchableOpacity>
+        </View>
+      </SlideUpSheet>
+      <CategorySheet
+        visible={catOpen}
+        onClose={() => setCatOpen(false)}
+        title="Category"
+        options={[...categories.filter((c) => c !== "Income"), ...customCats]}
+        selected={[cat]}
+        onToggle={(name) => {
+          setCat(name);
+          setCatOpen(false);
+        }}
+      />
     </SafeAreaView>
   );
 }
@@ -234,8 +305,29 @@ const styles = StyleSheet.create({
   label: { fontSize: 14, fontWeight: "700", fontFamily: fonts.bodyBold, color: colors.ink, marginBottom: 8, marginTop: 12 },
   input: { backgroundColor: "#fff", borderWidth: 1, borderColor: colors.border, borderRadius: 14, padding: 14, fontSize: 16, fontFamily: fonts.body },
   fixedAmount: { fontSize: 30, fontWeight: "800", fontFamily: fonts.bodyXB, color: colors.ink, marginTop: 2 },
+  catButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 14,
+    padding: 12,
+  },
+  catText: { fontSize: 16, fontWeight: "700", fontFamily: fonts.bodyBold, color: colors.ink },
+  catSub: { fontSize: 13, fontFamily: fonts.body, color: colors.muted, marginTop: 2 },
   note: { fontSize: 12.5, fontFamily: fonts.body, color: colors.muted, marginTop: 8, lineHeight: 18 },
   chipRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+  groupTitle: { fontSize: 13, fontWeight: "700", fontFamily: fonts.bodyBold, color: colors.muted, marginTop: 14, marginBottom: 8, letterSpacing: 0.5 },
+  kindRow: { flexDirection: "row", gap: 8 },
+  kind: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 14, borderRadius: 18, backgroundColor: "#fff", borderWidth: 1, borderColor: colors.border },
+  kindActive: { backgroundColor: colors.ink, borderColor: colors.ink },
+  kindText: { fontWeight: "800", fontFamily: fonts.bodyXB, color: colors.ink2, fontSize: 15 },
+  kindTextActive: { color: "#fff" },
+  providerRow: { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "#fff", borderWidth: 1, borderColor: colors.border, borderRadius: 14, padding: 14, marginTop: 10 },
+  providerName: { fontSize: 16, fontWeight: "700", fontFamily: fonts.bodyBold, color: colors.ink },
+  providerSub: { fontSize: 13, fontFamily: fonts.body, color: colors.muted, marginTop: 2 },
   chip: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 99, backgroundColor: "#fff", borderWidth: 1, borderColor: colors.border },
   chipActive: { backgroundColor: colors.ink, borderColor: colors.ink },
   chipText: { fontWeight: "600", fontFamily: fonts.bodyMedium, color: colors.ink2, fontSize: 13 },

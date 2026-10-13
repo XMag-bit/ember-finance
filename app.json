@@ -2,7 +2,7 @@
   "expo": {
     "name": "Ember Finance",
     "slug": "ember-finance",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -12,7 +12,7 @@
     },
     "android": {
       "package": "com.ember.finance",
-      "versionCode": 1,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#C86E4B"

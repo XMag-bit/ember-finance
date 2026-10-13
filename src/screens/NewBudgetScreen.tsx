@@ -7,6 +7,8 @@ import { Card } from "../components/ui";
 import { FadeInView } from "../components/motion";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { AmountInput } from "../components/AmountInput";
+import { CategorySheet } from "../components/CategorySheet";
+import { AppIcon } from "../components/AppIcon";
 import { categories, CATEGORY_ICONS, CURRENCY_SYMBOLS } from "../data/mock";
 import { useTxs } from "../store/TxContext";
 import { useBudgets } from "../store/BudgetsContext";
@@ -24,6 +26,7 @@ export function NewBudgetScreen({ navigation, route }: any) {
   const [label, setLabel] = useState(existing?.label ?? "");
   const [limit, setLimit] = useState<number>(existing?.limit ?? NaN);
   const [cats, setCats] = useState<string[]>(existing?.cats ?? []);
+  const [catOpen, setCatOpen] = useState(false);
 
   const choices = [...categories.filter((c) => c !== "Income"), ...customCats];
 
@@ -34,10 +37,6 @@ export function NewBudgetScreen({ navigation, route }: any) {
     setLimit(b?.limit ?? NaN);
     setCats(b?.cats ?? []);
   }, [editingId]);
-
-  function toggleCat(c: string) {
-    setCats((prev) => (prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]));
-  }
 
   function handleCreate() {
     const value = limit;
@@ -104,27 +103,16 @@ export function NewBudgetScreen({ navigation, route }: any) {
               accessibilityLabel="Monthly limit"
             />
             <Text style={styles.label}>Tracks categories</Text>
-            <View style={styles.catRow}>
-              {choices.map((c) => {
-                const active = cats.includes(c);
-                return (
-                  <TouchableOpacity
-                    key={c}
-                    onPress={() => toggleCat(c)}
-                    style={[styles.chip, active && styles.chipActive]}
-                    accessibilityLabel={`Track ${c}`}
-                    accessibilityState={{ selected: active }}
-                  >
-                    <Ionicons
-                      name={(CATEGORY_ICONS[c] ?? "receipt-outline") as React.ComponentProps<typeof Ionicons>["name"]}
-                      size={15}
-                      color={active ? "#fff" : colors.ink2}
-                    />
-                    <Text style={[styles.chipText, active && styles.chipTextActive]}>{c}</Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
+            <TouchableOpacity onPress={() => setCatOpen(true)} style={styles.catButton} accessibilityLabel="Pick categories">
+              <AppIcon name={CATEGORY_ICONS[cats[0]] ?? "receipt-outline"} tileSize={42} size={20} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.catText}>
+                  {cats.length > 0 ? cats.join(" · ") : "Pick categories"}
+                </Text>
+                <Text style={styles.catSub}>{cats.length > 0 ? `${cats.length} selected - tap to change` : "Tap to choose"}</Text>
+              </View>
+              <Ionicons name="chevron-forward-outline" size={18} color={colors.muted} />
+            </TouchableOpacity>
             <TouchableOpacity style={styles.create} onPress={handleCreate} accessibilityLabel={existing ? "Save changes" : "Create budget"}>
               <Text style={styles.createText}>{existing ? "Save changes" : "Create budget"}</Text>
             </TouchableOpacity>
@@ -136,6 +124,15 @@ export function NewBudgetScreen({ navigation, route }: any) {
           </Card>
         </FadeInView>
       </ScrollView>
+      <CategorySheet
+        visible={catOpen}
+        onClose={() => setCatOpen(false)}
+        title="Tracks categories"
+        options={choices}
+        selected={cats}
+        multi
+        onToggle={(name) => setCats((prev) => (prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name]))}
+      />
     </SafeAreaView>
   );
 }
@@ -143,11 +140,18 @@ export function NewBudgetScreen({ navigation, route }: any) {
 const styles = StyleSheet.create({
   label: { fontSize: 14, fontWeight: "700", fontFamily: fonts.bodyBold, color: colors.ink, marginBottom: 8, marginTop: 12 },
   input: { backgroundColor: "#fff", borderWidth: 1, borderColor: colors.border, borderRadius: 14, padding: 14, fontSize: 16, fontFamily: fonts.body },
-  catRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  chip: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 99, backgroundColor: "#fff", borderWidth: 1, borderColor: colors.border },
-  chipActive: { backgroundColor: colors.ink, borderColor: colors.ink },
-  chipText: { fontWeight: "600", fontFamily: fonts.bodyMedium, color: colors.ink2, fontSize: 13 },
-  chipTextActive: { color: "#fff" },
+  catButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 14,
+    padding: 12,
+  },
+  catText: { fontSize: 15, fontWeight: "700", fontFamily: fonts.bodyBold, color: colors.ink },
+  catSub: { fontSize: 13, fontFamily: fonts.body, color: colors.muted, marginTop: 2 },
   create: { backgroundColor: colors.accent, borderRadius: 14, paddingVertical: 14, alignItems: "center", marginTop: 14 },
   createText: { color: "#fff", fontSize: 16, fontWeight: "800", fontFamily: fonts.bodyXB },
   delete: {
