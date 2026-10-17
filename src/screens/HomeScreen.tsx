@@ -140,14 +140,14 @@ export function HomeScreen({ navigation }: any) {
               <Text style={[styles.heroChipText, { color: chip.color }]}>{chip.text}</Text>
             </View>
           </View>
-          <Text style={styles.heroBalance}>{money(totalBalance, cur)}</Text>
+          <Text style={styles.heroBalance} numberOfLines={1}>{money(totalBalance, cur)}</Text>
           <View style={styles.heroRow}>
             <View style={styles.inOut}>
               <View style={styles.inOutHead}>
                 <Ionicons name="arrow-down-circle-outline" size={14} color="#9ED6A0" />
                 <Text style={styles.inOutLabel}>Income</Text>
               </View>
-              <Text style={styles.inOutVal}>{money(monthIn, cur)}</Text>
+              <Text style={styles.inOutVal} numberOfLines={1}>{money(monthIn, cur)}</Text>
             </View>
             <View style={styles.divider} />
             <View style={styles.inOut}>
@@ -155,7 +155,7 @@ export function HomeScreen({ navigation }: any) {
                 <Ionicons name="arrow-up-circle-outline" size={14} color="#E8A08D" />
                 <Text style={styles.inOutLabel}>Spent</Text>
               </View>
-              <Text style={styles.inOutVal}>{money(monthOut, cur)}</Text>
+              <Text style={styles.inOutVal} numberOfLines={1}>{money(monthOut, cur)}</Text>
             </View>
             <TouchableOpacity style={styles.reportBtn} onPress={() => navigation.navigate("Insight")}>
               <Text style={{ color: "#fff", fontWeight: "700", fontFamily: fonts.bodyBold }}>Insight</Text>

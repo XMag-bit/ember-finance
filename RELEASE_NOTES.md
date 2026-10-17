@@ -1,6 +1,14 @@
-# Ember Finance — Release Notes (latest update)
+# Ember Finance — Release Notes
 
-## Category picker is now one list everywhere
+## v1.0.3 — Category popup fix
+
+The category list now opens correctly everywhere: it slides up from the
+bottom as a full-screen sheet with a dimmed background, instead of
+rendering tangled with the form behind it. Applies to Add transaction,
+QR payment confirm, and New budget — same list, same animation, just
+properly layered.
+
+## Previous update — one category list everywhere
 
 Picking a category works the same on every screen: tap the field and a
 bottom sheet slides up with a themed list — icon, name, and a green check

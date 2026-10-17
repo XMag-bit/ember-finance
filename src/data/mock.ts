@@ -86,16 +86,8 @@ const NO_DECIMALS: Currency[] = ["JPY", "IDR"];
 
 // Plain amount, e.g. $1,450.00 or Rp.12,481 (no decimals for JPY/IDR).
 // At or above SHORTEN_FROM, amounts collapse to a letter suffix (K/M/B/T)
-// with at most one truncated decimal: $12.5M, Rp.999.9K, $1M.
-// SHORTEN_FROM_BY_CURRENCY optionally overrides the threshold per currency
-// (missing entries fall back to SHORTEN_FROM).
-export const SHORTEN_FROM = 1_000_000;
-
-export const SHORTEN_FROM_BY_CURRENCY: Partial<Record<string, number>> = {};
-
-function shortenThreshold(currency: string): number {
-  return SHORTEN_FROM_BY_CURRENCY[currency] ?? SHORTEN_FROM;
-}
+// with at most one truncated decimal: Rp.443K, Rp.999.9K, $1.2M, $5B.
+export const SHORTEN_FROM = 100_000;
 
 const SHORT_UNITS: Array<[number, string]> = [
   [1e12, "T"],
@@ -119,17 +111,26 @@ function shortSuffix(abs: number): string {
   return `${abs}`;
 }
 
+/**
+ * Full form below the threshold, matching the AmountInput separators:
+ * whole currencies (IDR/JPY) group with dots (Rp.57.000), others with
+ * commas and two decimals ($57,000.00). Zero decimals for whole currencies.
+ */
+function fullForm(abs: number, currency: string): string {
+  if (isWholeCurrency(currency)) return groupInt(String(Math.round(abs)), ".");
+  const [int, frac] = abs.toFixed(2).split(".");
+  return `${groupInt(int, ",")}.${frac}`;
+}
+
 export function money(n: number, currency: string) {
   const symbol = (CURRENCY_SYMBOLS as Record<string, string>)[currency] ?? "$";
   const abs = Math.abs(n);
-  if (!isNaN(abs) && isFinite(abs) && abs >= shortenThreshold(currency)) {
-    return `${symbol}${shortSuffix(abs)}`;
+  if (!isNaN(abs) && isFinite(abs)) {
+    if (abs >= SHORTEN_FROM) return `${symbol}${shortSuffix(abs)}`;
+    return `${symbol}${fullForm(abs, currency)}`;
   }
-  const decimals = (NO_DECIMALS as string[]).includes(currency) ? 0 : 2;
-  return `${symbol}${abs.toLocaleString("en-US", {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  })}`;
+  // NaN / Infinity render as zero instead of crashing or leaking "NaN".
+  return `${symbol}${isWholeCurrency(currency) ? "0" : "0.00"}`;
 }
 
 // Signed amount for transaction rows, e.g. +$680.00 / −Rp.86.
